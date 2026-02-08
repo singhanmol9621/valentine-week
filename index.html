@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine Week Journey ❤️</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    text-align: center;
+    color: white;
+    transition: background 1s;
+}
+
+/* Main Page */
+.container {
+    padding: 40px 20px;
+}
+
+h1 { font-size: 2.5em; }
+
+.card {
+    background: rgba(255,255,255,0.15);
+    padding: 25px;
+    border-radius: 20px;
+    max-width: 500px;
+    margin: auto;
+    backdrop-filter: blur(10px);
+}
+
+button {
+    padding: 12px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    background: white;
+    color: #e91e63;
+    font-weight: bold;
+}
+
+button:hover {
+    transform: scale(1.05);
+}
+
+.gift {
+    font-size: 55px;
+    margin: 20px;
+    animation: bounce 1.5s infinite;
+}
+
+@keyframes bounce {
+    0% {transform: translateY(0);}
+    50% {transform: translateY(-10px);}
+    100% {transform: translateY(0);}
+}
+
+.popup {
+    display: none;
+    margin-top: 20px;
+    padding: 15px;
+    background: white;
+    color: #e91e63;
+    border-radius: 12px;
+    animation: fadeIn 0.6s;
+    font-style: italic;
+}
+
+@keyframes fadeIn {
+    from {opacity: 0; transform: scale(0.8);}
+    to {opacity: 1; transform: scale(1);}
+}
+
+/* FINAL SURPRISE PAGE */
+#finalPage {
+    display: none;
+    height: 100vh;
+    overflow: hidden;
+    position: relative;
+    background: linear-gradient(135deg,#ff9a9e,#fad0c4,#ffd1ff);
+}
+
+.floating {
+    position: absolute;
+    font-size: 30px;
+    animation: float 8s linear infinite;
+}
+
+@keyframes float {
+    from { transform: translateY(100vh); }
+    to { transform: translateY(-10vh); }
+}
+
+/* Envelope */
+.envelope {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%,-50%);
+    width: 260px;
+    height: 180px;
+    background: #ff5e78;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.flap {
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-left: 130px solid transparent;
+    border-right: 130px solid transparent;
+    border-bottom: 90px solid #ff3d5a;
+    top: -90px;
+    left: 0;
+    transition: 0.6s;
+}
+
+.letter {
+    position: absolute;
+    width: 230px;
+    height: 140px;
+    background: white;
+    left: 15px;
+    top: 20px;
+    padding: 15px;
+    box-sizing: border-box;
+    transform: translateY(60px);
+    transition: 0.6s;
+    font-style: italic;
+    color: #e91e63;
+    font-size: 16px;
+    overflow: auto;
+    border-radius: 8px;
+}
+
+.envelope.open .flap {
+    transform: rotateX(180deg);
+}
+
+.envelope.open .letter {
+    transform: translateY(-80px);
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1 id="dayTitle"></h1>
+
+    <div class="card">
+        <div class="gift" id="giftIcon"></div>
+
+        <button onclick="revealMessage()">🎁 Click to Reveal</button>
+
+        <div id="messageBox" class="popup"></div>
+
+        <br>
+        <button onclick="nextDay()">Next Day ➜</button>
+    </div>
+</div>
+
+<!-- FINAL SURPRISE PAGE -->
+<div id="finalPage">
+
+    <!-- Floating Items -->
+    <div class="floating" style="left:10%; animation-delay:0s;">🧸</div>
+    <div class="floating" style="left:25%; animation-delay:2s;">🌹</div>
+    <div class="floating" style="left:40%; animation-delay:4s;">🍫</div>
+    <div class="floating" style="left:60%; animation-delay:1s;">💍</div>
+    <div class="floating" style="left:75%; animation-delay:3s;">🧸</div>
+    <div class="floating" style="left:85%; animation-delay:5s;">🌹</div>
+
+    <!-- Envelope -->
+    <div class="envelope" onclick="openEnvelope(this)">
+        <div class="flap"></div>
+
+        <div class="letter">
+            My Love,<br><br>
+
+            From the first rose to this beautiful day,<br>
+            every moment with you feels magical.<br><br>
+
+            You are my smile, my peace,<br>
+            my favorite person in this world.<br><br>
+
+            I promise to stand beside you,<br>
+            to hold your hand forever,<br>
+            and to love you more each day.<br><br>
+
+            Forever yours ❤️
+        </div>
+    </div>
+</div>
+
+<script>
+let currentDay = 0;
+
+const days = [
+{
+title: "🌹 Rose Day",
+bg: "linear-gradient(135deg,#ff758c,#ff7eb3)",
+gift: "🌹",
+msg: "A rose for the most special person in my life."
+},
+{
+title: "💍 Propose Day",
+bg: "linear-gradient(135deg,#f7971e,#ffd200)",
+gift: "💍",
+msg: "Will you stay with me forever and make life beautiful?"
+},
+{
+title: "🍫 Chocolate Day",
+bg: "linear-gradient(135deg,#5a3f37,#2c7744)",
+gift: "🍫",
+msg: "Life is sweeter when I have you."
+},
+{
+title: "🧸 Teddy Day",
+bg: "linear-gradient(135deg,#89f7fe,#66a6ff)",
+gift: "🧸",
+msg: "This teddy is a warm hug from me."
+},
+{
+title: "🤝 Promise Day",
+bg: "linear-gradient(135deg,#c471f5,#fa71cd)",
+gift: "🤝",
+msg: "I promise to always care for you and stand by you."
+},
+{
+title: "🤗 Hug Day",
+bg: "linear-gradient(135deg,#ff9a9e,#fad0c4)",
+gift: "🤗",
+msg: "A tight hug to remind you how much you mean to me."
+},
+{
+title: "💋 Kiss Day",
+bg: "linear-gradient(135deg,#ff416c,#ff4b2b)",
+gift: "💋",
+msg: "A sweet kiss filled with love just for you."
+},
+{
+title: "❤️ Valentine's Day",
+bg: "linear-gradient(135deg,#ff0844,#ffb199)",
+gift: "❤️",
+msg: "You are my today, tomorrow, and forever."
+}
+];
+
+function loadDay() {
+    const day = days[currentDay];
+    document.body.style.background = day.bg;
+    document.getElementById("dayTitle").innerText = day.title;
+    document.getElementById("giftIcon").innerText = day.gift;
+    document.getElementById("messageBox").style.display = "none";
+}
+
+function revealMessage() {
+    const box = document.getElementById("messageBox");
+    box.innerText = days[currentDay].msg;
+    box.style.display = "block";
+}
+
+function nextDay() {
+    currentDay++;
+
+    if (currentDay >= days.length) {
+        document.querySelector(".container").style.display = "none";
+        document.getElementById("finalPage").style.display = "block";
+        return;
+    }
+
+    loadDay();
+}
+
+function openEnvelope(el) {
+    el.classList.toggle("open");
+}
+
+loadDay();
+</script>
+
+</body>
+</html>
